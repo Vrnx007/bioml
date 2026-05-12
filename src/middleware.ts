@@ -45,6 +45,19 @@ export default async function middleware(request: NextRequest) {
     }
   }
 
+  /** Company / GST — buyers only, after sign-in */
+  if (rest.startsWith("account")) {
+    if (!user) {
+      const u = new URL(`/${locale}/auth/login`, request.url);
+      u.searchParams.set("next", pathname);
+      return NextResponse.redirect(u);
+    }
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
+    if (profile?.role !== "buyer_user") {
+      return NextResponse.redirect(new URL(`/${locale}/catalog`, request.url));
+    }
+  }
+
   return response;
 }
 

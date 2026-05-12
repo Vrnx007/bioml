@@ -18,7 +18,7 @@
   "Nav": {
     "catalog": "Catalog",
     "categories": "Categories",
-    "account": "Buyer account",
+    "account": "Company details",
     "vendor": "Vendor portal",
     "admin": "Admin",
     "cart": "Cart",
@@ -28,7 +28,7 @@
   },
   "Auth": {
     "title": "Sign in",
-    "subtitle": "Use your work email and password. Demo accounts are created in Supabase (see docs/DEMO_ACCESS.md).",
+    "subtitle": "Use the demo email and password from your team handoff.",
     "email": "Email",
     "password": "Password",
     "signIn": "Sign in",
@@ -97,9 +97,10 @@
     "productData": "Product data"
   },
   "Account": {
-    "title": "Buyer account",
+    "title": "Company details",
+    "lead": "Add your organization’s tax ID so quotes and invoices stay compliant.",
     "gstin": "GSTIN",
-    "gstinHint": "15-character GST identification for your organization",
+    "gstinHint": "Optional in this demo — enter any placeholder or your real 15-character GSTIN.",
     "orders": "Orders",
     "documents": "Downloaded documents",
     "addresses": "Addresses"

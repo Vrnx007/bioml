@@ -1,37 +1,39 @@
 # Demo access (Supabase Auth + profiles)
 
-This app gates **Admin** (`/{locale}/admin`) and **Vendor** (`/{locale}/vendor`) with Supabase session + `public.profiles.role`.
+Use these **demo credentials** in Supabase Auth (create each user with the same password), then add matching `profiles` rows.
 
-## 1. Create Auth users
+## Demo credentials (development)
 
-In the Supabase Dashboard: **Authentication → Users → Add user**.
+| Role | Email | Password (set in Supabase) | `profiles.role` |
+|------|--------|------------------------------|-----------------|
+| Admin | `admin@demo.bip-mp.local` | `DemoBip2026!` | `platform_admin` |
+| Vendor | `vendor@demo.bip-mp.local` | `DemoBip2026!` | `vendor_staff` |
+| Buyer | `buyer@demo.bip-mp.local` | `DemoBip2026!` | `buyer_user` |
 
-Suggested emails (set passwords in the Dashboard; **do not** commit passwords to git):
+Create each user in **Authentication → Users** with the password above, then run the profile SQL below with each user’s UUID.
 
-| Role | Email (example) | `profiles.role` |
-|------|-----------------|-----------------|
-| Platform admin | `admin-demo@yourdomain.com` | `platform_admin` |
-| Vendor staff | `vendor-demo@yourdomain.com` | `vendor_staff` |
-| Buyer | `buyer-demo@yourdomain.com` | `buyer_user` |
+---
 
-## 2. Insert profile rows
+## 1. Insert profile rows
 
-After each user is created, copy their UUID from the Users table and run in **SQL Editor** (replace `USER_UUID`):
+After each user exists, copy their UUID from the Users table and run in **SQL Editor** (replace `USER_UUID` and email):
 
 ```sql
 insert into public.profiles (id, email, full_name, role)
 values (
   'USER_UUID'::uuid,
-  'admin-demo@yourdomain.com',
+  'admin@demo.bip-mp.local',
   'Demo Admin',
   'platform_admin'
 )
 on conflict (id) do update set role = excluded.role, email = excluded.email;
 ```
 
-Repeat for `vendor_staff` and `buyer_user` with the corresponding user ids.
+Repeat for `vendor@demo.bip-mp.local` / `vendor_staff` and `buyer@demo.bip-mp.local` / `buyer_user`.
 
-## 3. Row Level Security
+---
+
+## 2. Row Level Security
 
 Ensure authenticated users can **select their own** profile row, for example:
 
@@ -43,12 +45,16 @@ using (auth.uid() = id);
 
 (Adjust if your project already defines stricter policies.)
 
-## 4. Local sign-in
+---
 
-With `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`, open `/{locale}/auth/login` (e.g. `/en/auth/login`) and sign in with the demo users you created.
+## 3. Sign in
+
+With `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`, open `/{locale}/auth/login` (e.g. `/en/auth/login`) and sign in with the table above.
 
 Sign out: `/{locale}/auth/sign-out`.
 
-## 5. Without Supabase
+---
 
-If those env vars are unset, the storefront uses the **in-repo demo catalog** and middleware **does not** enforce admin/vendor (no session server).
+## 4. Without Supabase
+
+If those env vars are unset, the storefront uses the **in-repo demo catalog** and middleware **does not** enforce admin/vendor/account gates (no session server).

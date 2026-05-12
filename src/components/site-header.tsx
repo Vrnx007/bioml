@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Search, User } from "lucide-react";
+import { Search } from "lucide-react";
 import { Link as LocalizedLink } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { HeaderAuth } from "@/components/header-auth";
@@ -56,10 +56,6 @@ export function SiteHeader() {
           aria-label="Primary"
         >
           <NavItem href="/catalog">{t("catalog")}</NavItem>
-          <NavItem href="/account">
-            <User className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
-            {t("account")}
-          </NavItem>
           <HeaderAuth />
           <div className="ml-1 flex items-center border-l border-border pl-3">
             <LocaleSwitcher />

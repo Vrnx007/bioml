@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { LogIn, LogOut, User as UserIcon, Package, Shield } from "lucide-react";
+import { LogIn, LogOut, User as UserIcon, Package, Shield, UserCircle } from "lucide-react";
 
 export function HeaderAuth() {
   const t = useTranslations("Nav");
@@ -62,6 +62,8 @@ export function HeaderAuth() {
     );
   }
 
+  const showCompanyDetails = role === "buyer_user";
+
   return (
     <div className="flex flex-wrap items-center gap-1 sm:gap-2">
       <span className="hidden max-w-[10rem] truncate text-xs text-text-muted sm:inline" title={email}>
@@ -78,6 +80,12 @@ export function HeaderAuth() {
         <LocalizedNavLink href="/vendor/onboarding">
           <Package className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
           {t("vendor")}
+        </LocalizedNavLink>
+      )}
+      {showCompanyDetails && (
+        <LocalizedNavLink href="/account">
+          <UserCircle className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
+          {t("account")}
         </LocalizedNavLink>
       )}
       <LocalizedNavLink href="/auth/sign-out">
