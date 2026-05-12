@@ -2,6 +2,10 @@
 
 B2B chemical marketplace (Next.js 15 + Supabase/Postgres). **Display name:** Bip Mp · **npm package folder:** `bip-mp` (lowercase; npm naming).
 
+## Security
+
+This project tracks the **Next.js App Router** security releases. We currently pin **Next.js 15.5.18** (npm `backport` line). If Vercel warns about a vulnerable Next version, upgrade `next` and `eslint-config-next` together and redeploy. See the [Next.js security advisories](https://nextjs.org/blog/security-update-2025-12-11) and [CVE-2025-66478](https://nextjs.org/blog/CVE-2025-66478).
+
 ## Quick start
 
 ```bash
