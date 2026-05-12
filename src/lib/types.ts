@@ -10,6 +10,8 @@ export type CatalogProduct = {
   api_family: string | null;
   product_format: string | null;
   promotion: boolean;
+  /** Tags for sidebar Promotion checkboxes: new | replacement_part | special_offer */
+  promotion_tags: string[];
   fulfillment_city: string | null;
   fulfillment_state: string | null;
   moq_display: string | null;
@@ -17,6 +19,14 @@ export type CatalogProduct = {
   min_order_kg: number | null;
   image_url: string | null;
   purity_grade: string | null;
+  accreditation_product: string | null;
+  accreditation_lab: string | null;
+  analyte: string | null;
+  impurity_type: string | null;
+  sil_type: string | null;
+  matrix: string | null;
+  /** Home carousel category slugs: crm | filtration | solvents | media | cells | filters */
+  category_slugs: string[];
 };
 
 export type ProductDetail = CatalogProduct & {

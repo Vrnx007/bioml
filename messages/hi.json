@@ -22,7 +22,19 @@
     "vendor": "विक्रेता पोर्टल",
     "admin": "व्यवस्थापक",
     "cart": "कार्ट",
-    "rfq": "RFQ"
+    "rfq": "RFQ",
+    "login": "साइन इन",
+    "logout": "साइन आउट"
+  },
+  "Auth": {
+    "title": "साइन इन",
+    "subtitle": "अपना कार्य ईमेल और पासवर्ड उपयोग करें। डेमो खातों के लिए docs/DEMO_ACCESS.md देखें।",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "signIn": "साइन इन",
+    "signingIn": "साइन इन हो रहा है…",
+    "notConfigured": "Supabase कॉन्फ़िगर नहीं है। NEXT_PUBLIC_SUPABASE_URL और NEXT_PUBLIC_SUPABASE_ANON_KEY सेट करें।",
+    "backToCatalog": "कैटलॉग पर वापस"
   },
   "Home": {
     "heroTitle": "फार्मास्यूटिकल और प्रयोगशाला रसायन — भरोसेमंद खरीद",
@@ -40,6 +52,17 @@
     "clearFilters": "फ़िल्टर साफ़ करें"
   },
   "Filters": {
+    "filterResults": "फ़िल्टर परिणाम",
+    "category": "श्रेणी",
+    "clearCategory": "श्रेणी साफ़ करें",
+    "modeOr": "OR",
+    "modeAnd": "AND",
+    "showMore": "+ और दिखाएँ",
+    "showLess": "कम दिखाएँ",
+    "selectOrSearch": "चुनें या खोजें…",
+    "promoNew": "नया",
+    "promoReplacement": "प्रतिस्थापन भाग",
+    "promoSpecial": "विशेष ऑफ़र",
     "promotion": "प्रचार",
     "apiFamily": "API परिवार",
     "productType": "उत्पाद प्रकार",

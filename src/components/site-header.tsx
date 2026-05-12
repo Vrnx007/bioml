@@ -1,9 +1,10 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Search, User, Package, Shield } from "lucide-react";
+import { Search, User } from "lucide-react";
 import { Link as LocalizedLink } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { HeaderAuth } from "@/components/header-auth";
 
 export function SiteHeader() {
   const t = useTranslations("Nav");
@@ -59,14 +60,7 @@ export function SiteHeader() {
             <User className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
             {t("account")}
           </NavItem>
-          <NavItem href="/vendor/onboarding">
-            <Package className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
-            {t("vendor")}
-          </NavItem>
-          <NavItem href="/admin">
-            <Shield className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
-            {t("admin")}
-          </NavItem>
+          <HeaderAuth />
           <div className="ml-1 flex items-center border-l border-border pl-3">
             <LocaleSwitcher />
           </div>

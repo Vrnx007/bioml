@@ -25,7 +25,7 @@ export async function CategoryCarousel() {
           {categories.map(({ slug, labelKey, Icon }) => (
             <Link
               key={slug}
-              href={`/catalog?productType=${encodeURIComponent(labelKey)}`}
+              href={`/catalog?category=${slug}`}
               className="group flex min-w-[158px] flex-col items-center gap-4 rounded-card border border-border bg-surface-muted/40 p-5 text-center shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-accent-teal hover:bg-surface-elevated hover:shadow-card"
             >
               <span className="flex h-16 w-16 items-center justify-center rounded-full border border-border bg-surface-elevated text-accent-teal shadow-sm transition group-hover:border-accent-teal/40 group-hover:bg-accent-subtle">

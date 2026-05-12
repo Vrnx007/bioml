@@ -22,7 +22,19 @@
     "vendor": "Vendor portal",
     "admin": "Admin",
     "cart": "Cart",
-    "rfq": "RFQ"
+    "rfq": "RFQ",
+    "login": "Sign in",
+    "logout": "Sign out"
+  },
+  "Auth": {
+    "title": "Sign in",
+    "subtitle": "Use your work email and password. Demo accounts are created in Supabase (see docs/DEMO_ACCESS.md).",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "notConfigured": "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+    "backToCatalog": "Back to catalog"
   },
   "Home": {
     "heroTitle": "Pharmaceutical & lab chemicals — procurement you can trust",
@@ -40,6 +52,17 @@
     "clearFilters": "Clear filters"
   },
   "Filters": {
+    "filterResults": "Filter results",
+    "category": "Category",
+    "clearCategory": "Clear category",
+    "modeOr": "OR",
+    "modeAnd": "AND",
+    "showMore": "+ Show more",
+    "showLess": "Show less",
+    "selectOrSearch": "Select or search…",
+    "promoNew": "New",
+    "promoReplacement": "Replacement part",
+    "promoSpecial": "Special offer",
     "promotion": "Promotion",
     "apiFamily": "API family",
     "productType": "Product type",

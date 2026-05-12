@@ -1,31 +1,114 @@
 import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getDemoCatalog, getDemoProductBySlug } from "@/lib/demo-catalog";
+import { getDemoProductBySlug, demoCatalog } from "@/lib/demo-catalog";
 import type { CatalogProduct, ProductDetail } from "@/lib/types";
+import type { CatalogFilterState } from "@/lib/catalog-filter-state";
+import { applyCatalogFilters } from "@/lib/catalog-filters";
 
-export async function fetchCatalog(filters?: Record<string, string | undefined>): Promise<CatalogProduct[]> {
+type ProductRow = {
+  id: string;
+  slug: string;
+  title: string;
+  brand: string | null;
+  cas_primary: string | null;
+  description: string | null;
+  product_type: string | null;
+  api_family: string | null;
+  product_format: string | null;
+  promotion: boolean;
+  fulfillment_city: string | null;
+  fulfillment_state: string | null;
+  moq_display: string | null;
+  chemical_image_url: string | null;
+  pubchem_cid: string | null;
+  specs: unknown;
+  accreditation_product: string | null;
+  accreditation_lab: string | null;
+  analyte: string | null;
+  impurity_type: string | null;
+  sil_type: string | null;
+  matrix: string | null;
+};
+
+function promotionTagsFromSpecs(specs: unknown): string[] {
+  if (!specs || typeof specs !== "object" || Array.isArray(specs)) return [];
+  const o = specs as Record<string, unknown>;
+  const t = o.promotion_tags;
+  if (!Array.isArray(t)) return [];
+  return t.map((x) => String(x)).filter(Boolean);
+}
+
+function categorySlugsFromSpecs(specs: unknown): string[] {
+  if (!specs || typeof specs !== "object" || Array.isArray(specs)) return [];
+  const o = specs as Record<string, unknown>;
+  const t = o.category_slugs;
+  if (!Array.isArray(t)) return [];
+  return t.map((x) => String(x).toLowerCase()).filter(Boolean);
+}
+
+function mapRow(
+  p: ProductRow,
+  variant: { id: string; pack_size: number; unit: string } | undefined,
+  firstTier: { unit_price: number; min_qty: number } | undefined
+): CatalogProduct {
+  const specs = typeof p.specs === "object" && p.specs && !Array.isArray(p.specs) ? (p.specs as Record<string, unknown>) : {};
+  const purity = typeof specs.purity === "string" ? specs.purity : null;
+  const tags = promotionTagsFromSpecs(p.specs);
+  const catSlugs = categorySlugsFromSpecs(p.specs);
+
+  const pricePerKg =
+    variant?.unit === "kg" && firstTier
+      ? firstTier.unit_price
+      : firstTier && variant?.pack_size
+        ? firstTier.unit_price / Number(variant.pack_size)
+        : null;
+
+  return {
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    brand: p.brand,
+    cas_primary: p.cas_primary,
+    catalog_code: null,
+    description: p.description,
+    product_type: p.product_type,
+    api_family: p.api_family,
+    product_format: p.product_format,
+    promotion: p.promotion,
+    promotion_tags: tags.length ? tags : p.promotion ? ["special_offer"] : [],
+    fulfillment_city: p.fulfillment_city,
+    fulfillment_state: p.fulfillment_state,
+    moq_display: p.moq_display,
+    price_per_kg: pricePerKg,
+    min_order_kg: variant ? Number(variant.pack_size) : null,
+    image_url: p.chemical_image_url,
+    purity_grade: purity,
+    accreditation_product: p.accreditation_product,
+    accreditation_lab: p.accreditation_lab,
+    analyte: p.analyte,
+    impurity_type: p.impurity_type,
+    sil_type: p.sil_type,
+    matrix: p.matrix,
+    category_slugs: catSlugs,
+  };
+}
+
+/** All published products (demo or Supabase), before URL facet filters. */
+export async function fetchAllCatalogProducts(): Promise<CatalogProduct[]> {
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return getDemoCatalog(filters);
+  if (!supabase) return [...demoCatalog];
 
-  let q = supabase
+  const { data, error } = await supabase
     .from("products")
     .select(
-      "id,slug,title,brand,cas_primary,description,product_type,api_family,product_format,promotion,fulfillment_city,fulfillment_state,moq_display,chemical_image_url,pubchem_cid,specs"
+      "id,slug,title,brand,cas_primary,description,product_type,api_family,product_format,promotion,fulfillment_city,fulfillment_state,moq_display,chemical_image_url,pubchem_cid,specs,accreditation_product,accreditation_lab,analyte,impurity_type,sil_type,matrix"
     )
     .eq("status", "published");
 
-  if (filters?.brand) q = q.ilike("brand", `%${filters.brand}%`);
-  if (filters?.cas) q = q.ilike("cas_primary", `%${filters.cas}%`);
-  if (filters?.apiFamily) q = q.ilike("api_family", `%${filters.apiFamily}%`);
-  if (filters?.productType) q = q.ilike("product_type", `%${filters.productType}%`);
-  if (filters?.format) q = q.eq("product_format", filters.format);
-  if (filters?.state) q = q.eq("fulfillment_state", filters.state);
-  if (filters?.promotion === "1") q = q.eq("promotion", true);
+  if (error || !data?.length) return [...demoCatalog];
 
-  const { data, error } = await q;
-  if (error || !data?.length) return getDemoCatalog(filters);
-
-  const ids = data.map((p) => p.id);
+  const rows = data as unknown as ProductRow[];
+  const ids = rows.map((p) => p.id);
   const { data: variants } = await supabase
     .from("product_variants")
     .select("id,product_id,pack_label,unit,pack_size,hsn_code")
@@ -47,35 +130,18 @@ export async function fetchCatalog(filters?: Record<string, string | undefined>)
     if (!variantByProduct.has(v.product_id)) variantByProduct.set(v.product_id, v);
   });
 
-  return data.map((p) => {
+  return rows.map((p) => {
     const v = variantByProduct.get(p.id);
-    const tlist = v ? tierByVariant.get(v.id) ?? [] : [];
+    const tlist = v ? (tierByVariant.get(v.id) ?? []) : [];
     const sorted = [...tlist].sort((a, b) => a.min_qty - b.min_qty);
     const first = sorted[0];
-    const pricePerKg =
-      v?.unit === "kg" && first ? first.unit_price : first && v?.pack_size ? first.unit_price / Number(v.pack_size) : null;
-
-    return {
-      id: p.id,
-      slug: p.slug,
-      title: p.title,
-      brand: p.brand,
-      cas_primary: p.cas_primary,
-      catalog_code: null,
-      description: p.description,
-      product_type: p.product_type,
-      api_family: p.api_family,
-      product_format: p.product_format,
-      promotion: p.promotion,
-      fulfillment_city: p.fulfillment_city,
-      fulfillment_state: p.fulfillment_state,
-      moq_display: p.moq_display,
-      price_per_kg: pricePerKg,
-      min_order_kg: v ? Number(v.pack_size) : null,
-      image_url: p.chemical_image_url,
-      purity_grade: typeof p.specs === "object" && p.specs && "purity" in p.specs ? String((p.specs as { purity?: string }).purity ?? "") : null,
-    } satisfies CatalogProduct;
+    return mapRow(p, v, first);
   });
+}
+
+export async function fetchCatalog(filterState: CatalogFilterState): Promise<CatalogProduct[]> {
+  const all = await fetchAllCatalogProducts();
+  return applyCatalogFilters(all, filterState);
 }
 
 export async function fetchProductBySlug(slug: string): Promise<ProductDetail | null> {
@@ -85,10 +151,7 @@ export async function fetchProductBySlug(slug: string): Promise<ProductDetail | 
   const { data: p } = await supabase.from("products").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
   if (!p) return getDemoProductBySlug(slug);
 
-  const { data: variants } = await supabase
-    .from("product_variants")
-    .select("*")
-    .eq("product_id", p.id);
+  const { data: variants } = await supabase.from("product_variants").select("*").eq("product_id", p.id);
 
   const vIds = (variants ?? []).map((v) => v.id);
   const { data: tiers } = await supabase.from("price_tiers").select("*").in("variant_id", vIds);
@@ -102,9 +165,12 @@ export async function fetchProductBySlug(slug: string): Promise<ProductDetail | 
   });
   const invMap = new Map((inv ?? []).map((i) => [i.variant_id, Number(i.quantity_available) > 0]));
 
-  const specs = typeof p.specs === "object" && p.specs && !Array.isArray(p.specs) ? (p.specs as Record<string, string | number | null>) : {};
+  const specs =
+    typeof p.specs === "object" && p.specs && !Array.isArray(p.specs) ? (p.specs as Record<string, string | number | null>) : {};
+  const tags = promotionTagsFromSpecs(p.specs);
+  const catSlugs = categorySlugsFromSpecs(p.specs);
 
-  return {
+  const base: CatalogProduct = {
     id: p.id,
     slug: p.slug,
     title: p.title,
@@ -116,6 +182,7 @@ export async function fetchProductBySlug(slug: string): Promise<ProductDetail | 
     api_family: p.api_family,
     product_format: p.product_format,
     promotion: p.promotion,
+    promotion_tags: tags.length ? tags : p.promotion ? ["special_offer"] : [],
     fulfillment_city: p.fulfillment_city,
     fulfillment_state: p.fulfillment_state,
     moq_display: p.moq_display,
@@ -123,6 +190,17 @@ export async function fetchProductBySlug(slug: string): Promise<ProductDetail | 
     min_order_kg: null,
     image_url: p.chemical_image_url,
     purity_grade: typeof specs.purity === "string" ? specs.purity : null,
+    accreditation_product: p.accreditation_product,
+    accreditation_lab: p.accreditation_lab,
+    analyte: p.analyte,
+    impurity_type: p.impurity_type,
+    sil_type: p.sil_type,
+    matrix: p.matrix,
+    category_slugs: catSlugs,
+  };
+
+  return {
+    ...base,
     iupac_name: p.iupac_name,
     formula: p.formula,
     pubchem_cid: p.pubchem_cid,

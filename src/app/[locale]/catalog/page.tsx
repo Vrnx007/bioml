@@ -2,8 +2,11 @@ import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { ProductCard } from "@/components/product-card";
-import { fetchCatalog } from "@/lib/catalog";
+import { fetchAllCatalogProducts } from "@/lib/catalog";
 import { canViewPricing } from "@/lib/auth-helpers";
+import { parseCatalogFilterState } from "@/lib/catalog-filter-state";
+import { applyCatalogFilters, CATEGORY_SLUGS } from "@/lib/catalog-filters";
+import { buildFacetMap } from "@/lib/catalog-facets";
 import { LayoutGrid } from "lucide-react";
 
 export default async function CatalogPage({
@@ -16,27 +19,34 @@ export default async function CatalogPage({
     const v = sp[k];
     return typeof v === "string" ? v : undefined;
   };
-  const filters = {
-    brand: str("brand"),
-    cas: str("cas"),
-    apiFamily: str("apiFamily"),
-    productType: str("productType"),
-    format: str("format"),
-    state: str("state"),
-    promotion: str("promotion"),
-  };
+  const filterState = parseCatalogFilterState(sp);
   const q = str("q");
-  let products = await fetchCatalog(filters);
+
+  const fullList = await fetchAllCatalogProducts();
+  let products = applyCatalogFilters(fullList, filterState);
+
   if (q) {
     const ql = q.toLowerCase();
     products = products.filter(
       (p) =>
         p.title.toLowerCase().includes(ql) ||
-        (p.cas_primary && p.cas_primary.includes(ql)) ||
+        (p.cas_primary && p.cas_primary.toLowerCase().includes(ql)) ||
         (p.catalog_code && p.catalog_code.toLowerCase().includes(ql)) ||
-        (p.description && p.description.toLowerCase().includes(ql))
+        (p.description && p.description.toLowerCase().includes(ql)) ||
+        (p.api_family && p.api_family.toLowerCase().includes(ql)) ||
+        (p.product_type && p.product_type.toLowerCase().includes(ql)) ||
+        (p.analyte && p.analyte.toLowerCase().includes(ql)) ||
+        (p.brand && p.brand.toLowerCase().includes(ql))
     );
   }
+
+  const facets = buildFacetMap(fullList, filterState);
+  const categoryCounts = Object.fromEntries(
+    CATEGORY_SLUGS.map((slug) => {
+      const base = applyCatalogFilters(fullList, filterState, { categorySlug: true });
+      return [slug, base.filter((p) => p.category_slugs.includes(slug)).length] as const;
+    })
+  );
 
   const showPrice = (await canViewPricing()) || process.env.NEXT_PUBLIC_DEMO_SHOW_PRICES === "true";
   const tc = await getTranslations("Catalog");
@@ -60,9 +70,9 @@ export default async function CatalogPage({
 
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:gap-12">
           <Suspense
-            fallback={<div className="h-72 w-full max-w-xs animate-pulse rounded-card bg-surface-muted lg:w-72" aria-hidden />}
+            fallback={<div className="h-72 w-full max-w-xs animate-pulse rounded-card bg-surface-muted lg:w-80" aria-hidden />}
           >
-            <FilterSidebar />
+            <FilterSidebar facets={facets} categoryCounts={categoryCounts} />
           </Suspense>
           <div className="min-w-0 flex-1">
             {products.length === 0 ? (
