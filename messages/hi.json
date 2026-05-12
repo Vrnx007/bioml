@@ -1,0 +1,111 @@
+{
+  "Common": {
+    "brand": "Bip Mp",
+    "tagline": "रसायन, संदर्भ सामग्री और क्रोमैटोग्राफी के लिए B2B मार्केटप्लेस",
+    "searchPlaceholder": "उत्पाद नाम, CAS, कैटलॉग कोड से खोजें…",
+    "loginRegister": "लॉगिन / पंजीकरण",
+    "inStock": "स्टॉक में",
+    "addToCart": "कार्ट में जोड़ें",
+    "requestQuote": "कोटेशन मांगें",
+    "sampleRequest": "नमूना मांगें",
+    "viewPricingLogin": "मूल्य देखने के लिए — लॉगिन या पंजीकरण",
+    "pricePerKg": "मूल्य / kg",
+    "minOrder": "न्यूनतम ऑर्डर",
+    "unitSize": "यूनिट आकार",
+    "isoBadge": "ISO 17034",
+    "trustStrip": "प्रमाणित संदर्भ सामग्री · प्रत्येक लॉट के साथ CoA और SDS · ERP-तैयार API"
+  },
+  "Nav": {
+    "catalog": "कैटलॉग",
+    "categories": "श्रेणियाँ",
+    "account": "खरीदार खाता",
+    "vendor": "विक्रेता पोर्टल",
+    "admin": "व्यवस्थापक",
+    "cart": "कार्ट",
+    "rfq": "RFQ"
+  },
+  "Home": {
+    "heroTitle": "फार्मास्यूटिकल और प्रयोगशाला रसायन — भरोसेमंद खरीद",
+    "heroSubtitle": "CAS और ग्रेड से गहरी खोज, खरीद से पहले अनुपालन दस्तावेज़, और निर्माताओं के लिए थोक स्तर।",
+    "shopTopCategories": "शीर्ष श्रेणियाँ",
+    "credibilityTitle": "विनियमित खरीदारों के लिए बनाया गया",
+    "credibilityBody": "ISO/IEC 17025 और 17034 अनुरूप वर्कफ़्लो, ट्रेसेबल दस्तावेज़ीकरण, और 48 घंटे में विक्रेता सत्यापन।"
+  },
+  "Catalog": {
+    "title": "उत्पाद कैटलॉग",
+    "subtitle": "API परिवार, ग्रेड, ब्रांड, प्रारूप और गोदाम क्षेत्र से फ़िल्टर करें।",
+    "filters": "फ़िल्टर",
+    "results": "परिणाम",
+    "noResults": "कोई उत्पाद आपके फ़िल्टर से मेल नहीं खाता।",
+    "clearFilters": "फ़िल्टर साफ़ करें"
+  },
+  "Filters": {
+    "promotion": "प्रचार",
+    "apiFamily": "API परिवार",
+    "productType": "उत्पाद प्रकार",
+    "brand": "ब्रांड",
+    "productAccreditations": "उत्पाद प्रत्ययन",
+    "labAccreditations": "प्रयोगशाला प्रत्ययन",
+    "analyte": "विश्लेष्य",
+    "casNumber": "CAS संख्या",
+    "productFormat": "उत्पाद प्रारूप",
+    "impurityType": "अशुद्धि प्रकार",
+    "silType": "SIL प्रकार",
+    "matrix": "मैट्रिक्स",
+    "location": "गोदाम / क्षेत्र"
+  },
+  "Product": {
+    "tabs": {
+      "overview": "अवलोकन",
+      "specs": "विशेषताएँ",
+      "compliance": "अनुपालन",
+      "safety": "सुरक्षा"
+    },
+    "productCode": "उत्पाद कोड",
+    "casNumber": "CAS संख्या",
+    "coa": "विश्लेषण प्रमाणपत्र (CoA)",
+    "sds": "सुरक्षा डेटा पत्रक (SDS)",
+    "reviews": "आपूर्तिकर्ता समीक्षा",
+    "quantity": "मात्रा",
+    "ghs": "GHS चित्र",
+    "hazards": "खतरे",
+    "storage": "भंडारण और हैंडलिंग",
+    "reach": "REACH / नियामक",
+    "productData": "उत्पाद डेटा"
+  },
+  "Account": {
+    "title": "खरीदार खाता",
+    "gstin": "GSTIN",
+    "gstinHint": "आपके संगठन के लिए 15-अंकीय GST पहचान",
+    "orders": "ऑर्डर",
+    "documents": "डाउनलोड किए गए दस्तावेज़",
+    "addresses": "पते"
+  },
+  "Vendor": {
+    "onboardingTitle": "विक्रेता ऑनबोर्डिंग",
+    "step1": "पंजीकरण — GST / PAN",
+    "step2": "कंपनी प्रोफ़ाइल और बैंक",
+    "step3": "कैटलॉग अपलोड (CSV / API)",
+    "step4": "अनुपालन टेम्पलेट (CoA / SDS)",
+    "step5": "लाइव और प्रशिक्षण",
+    "next": "आगे",
+    "back": "पीछे",
+    "submitProfile": "प्रोफ़ाइल सहेजें",
+    "csvTitle": "कैटलॉग CSV आयात",
+    "csvHint": "कॉलम: Product_Name, CAS_Number, IUPAC_Name, Formula, Purity_Grade, Description, Diagram_URL, CoA_URL, MSDS_URL, Price_per_KG, MOQ_KG, Packaging_Options, Shelf_Life, Supplier_ID",
+    "parseCsv": "CSV पार्स करें",
+    "pubchemHint": "PubChem के साथ संरचना डेटा के लिए CAS संख्याएँ सत्यापित की जाती हैं।"
+  },
+  "Admin": {
+    "title": "प्लेटफ़ॉर्म व्यवस्थापक",
+    "sellers": "विक्रेता KYC कतार",
+    "products": "उत्पाद मॉडरेशन",
+    "taxonomy": "श्रेणी वर्गीकरण",
+    "reviews": "समीक्षा मॉडरेशन",
+    "featureFlags": "फ़ीचर फ़्लैग (stub)"
+  },
+  "Integrations": {
+    "erpWebhook": "ERP आउटबाउंड वेबहुक",
+    "searchReindex": "खोज इंडेक्स नौकरी (stub)"
+  }
+}

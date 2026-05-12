@@ -1,0 +1,111 @@
+{
+  "Common": {
+    "brand": "Bip Mp",
+    "tagline": "B2B marketplace for chemicals, reference materials & chromatography",
+    "searchPlaceholder": "Search by product name, CAS, catalog code…",
+    "loginRegister": "Login / Register",
+    "inStock": "In stock",
+    "addToCart": "Add to cart",
+    "requestQuote": "Request quote",
+    "sampleRequest": "Request sample",
+    "viewPricingLogin": "To view pricing — login or register",
+    "pricePerKg": "Price / kg",
+    "minOrder": "Min. order",
+    "unitSize": "Unit size",
+    "isoBadge": "ISO 17034",
+    "trustStrip": "Accredited reference materials · CoA & SDS with every lot · ERP-ready APIs"
+  },
+  "Nav": {
+    "catalog": "Catalog",
+    "categories": "Categories",
+    "account": "Buyer account",
+    "vendor": "Vendor portal",
+    "admin": "Admin",
+    "cart": "Cart",
+    "rfq": "RFQ"
+  },
+  "Home": {
+    "heroTitle": "Pharmaceutical & lab chemicals — procurement you can trust",
+    "heroSubtitle": "Deep search by CAS and grade, compliance docs before you buy, and bulk tiers for manufacturers.",
+    "shopTopCategories": "Shop top categories",
+    "credibilityTitle": "Built for regulated buyers",
+    "credibilityBody": "ISO/IEC 17025 & 17034-aligned workflows, traceable documentation, and vendor verification in under 48 hours."
+  },
+  "Catalog": {
+    "title": "Product catalog",
+    "subtitle": "Filter by API family, grade, brand, format, and warehouse region.",
+    "filters": "Filters",
+    "results": "Results",
+    "noResults": "No products match your filters.",
+    "clearFilters": "Clear filters"
+  },
+  "Filters": {
+    "promotion": "Promotion",
+    "apiFamily": "API family",
+    "productType": "Product type",
+    "brand": "Brand",
+    "productAccreditations": "Product accreditations",
+    "labAccreditations": "Lab accreditations",
+    "analyte": "Analyte",
+    "casNumber": "CAS number",
+    "productFormat": "Product format",
+    "impurityType": "Impurity type",
+    "silType": "SIL type",
+    "matrix": "Matrix",
+    "location": "Warehouse / region"
+  },
+  "Product": {
+    "tabs": {
+      "overview": "Overview",
+      "specs": "Specifications",
+      "compliance": "Compliance",
+      "safety": "Safety"
+    },
+    "productCode": "Product code",
+    "casNumber": "CAS number",
+    "coa": "Certificate of Analysis (CoA)",
+    "sds": "Safety Data Sheet (SDS)",
+    "reviews": "Supplier reviews",
+    "quantity": "Quantity",
+    "ghs": "GHS pictograms",
+    "hazards": "Hazards",
+    "storage": "Storage & handling",
+    "reach": "REACH / regulatory",
+    "productData": "Product data"
+  },
+  "Account": {
+    "title": "Buyer account",
+    "gstin": "GSTIN",
+    "gstinHint": "15-character GST identification for your organization",
+    "orders": "Orders",
+    "documents": "Downloaded documents",
+    "addresses": "Addresses"
+  },
+  "Vendor": {
+    "onboardingTitle": "Seller onboarding",
+    "step1": "Register — GST / PAN",
+    "step2": "Company profile & bank",
+    "step3": "Catalog upload (CSV / API)",
+    "step4": "Compliance templates (CoA / SDS)",
+    "step5": "Go live & training",
+    "next": "Next",
+    "back": "Back",
+    "submitProfile": "Save profile",
+    "csvTitle": "Catalog CSV import",
+    "csvHint": "Columns: Product_Name, CAS_Number, IUPAC_Name, Formula, Purity_Grade, Description, Diagram_URL, CoA_URL, MSDS_URL, Price_per_KG, MOQ_KG, Packaging_Options, Shelf_Life, Supplier_ID",
+    "parseCsv": "Parse CSV",
+    "pubchemHint": "CAS numbers are validated against PubChem for structure data."
+  },
+  "Admin": {
+    "title": "Platform admin",
+    "sellers": "Seller KYC queue",
+    "products": "Product moderation",
+    "taxonomy": "Category taxonomy",
+    "reviews": "Review moderation",
+    "featureFlags": "Feature flags (stub)"
+  },
+  "Integrations": {
+    "erpWebhook": "ERP outbound webhook",
+    "searchReindex": "Search index job (Meilisearch / OpenSearch stub)"
+  }
+}
