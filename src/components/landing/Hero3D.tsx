@@ -1,36 +1,45 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Beaker, ShieldCheck, Truck } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { ArrowRight, ShieldCheck, Truck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { useEffect, useState } from "react";
+
+// Bubble generator
+const generateBubbles = (count: number) => {
+  return Array.from({ length: count }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 8 + 4,
+    x: Math.random() * 120 + 40, // spread across bottom
+    duration: Math.random() * 2 + 2,
+    delay: Math.random() * 2,
+  }));
+};
 
 export function Hero3D() {
-  const containerVariants = {
+  const [bubbles, setBubbles] = useState<{id: number, size: number, x: number, duration: number, delay: number}[]>([]);
+
+  useEffect(() => {
+    setBubbles(generateBubbles(15));
+  }, []);
+
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" as const },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
   return (
     <section className="relative overflow-hidden bg-white border-b border-border min-h-[90vh] flex items-center">
-      {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-blue-50 to-emerald-50 blur-3xl opacity-50" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-purple-50 to-blue-50 blur-3xl opacity-50" />
       </div>
 
       <div className="ui-container relative z-10 w-full">
@@ -79,69 +88,157 @@ export function Hero3D() {
             </motion.div>
           </motion.div>
 
-          {/* Right: 3D Chemical Abstract Art */}
+          {/* Right: Detailed Animated Beaker */}
           <motion.div 
-            className="mt-16 lg:mt-0 lg:flex-1 relative h-[500px] w-full hidden md:block perspective-1000"
+            className="mt-16 lg:mt-0 lg:flex-1 relative h-[500px] w-full hidden md:flex items-center justify-center perspective-1000"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {/* Center "Glass" container */}
-            <motion.div 
-              className="absolute inset-0 m-auto w-64 h-80 bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl shadow-2xl z-20 flex flex-col items-center justify-center overflow-hidden"
-              animate={{ y: [-10, 10, -10], rotateX: [2, -2, 2], rotateY: [-2, 2, -2] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-white/60 to-transparent" />
-              <Beaker className="w-24 h-24 text-blue-100 mb-4 drop-shadow-md" strokeWidth={1} />
-              <div className="text-center z-10">
-                <div className="text-2xl font-display font-bold text-brand-navy">Polymer X-90</div>
-                <div className="text-sm font-medium text-accent-teal uppercase tracking-widest mt-1">99.9% Purity</div>
-              </div>
-            </motion.div>
+            <div className="relative w-[300px] h-[400px]">
+              
+              {/* The Pouring Tube */}
+              <motion.div
+                className="absolute -top-10 left-[60%] origin-bottom-left"
+                animate={{ rotate: [-20, -50, -20] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              >
+                <svg width="40" height="100" viewBox="0 0 40 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 0 C10 0 10 80 10 90 C10 100 30 100 30 90 C30 80 30 0 30 0" stroke="#CBD5E1" strokeWidth="3" strokeLinecap="round" fill="rgba(255,255,255,0.8)" />
+                  <path d="M12 40 C12 40 12 85 12 90 C12 95 28 95 28 90 C28 85 28 40 28 40 Z" fill="#F59E0B" />
+                </svg>
+                {/* Dripping drops */}
+                <motion.div 
+                  className="absolute -bottom-4 left-2 w-3 h-3 bg-amber-500 rounded-full blur-[1px]"
+                  animate={{ y: [0, 150], opacity: [1, 1, 0], scale: [1, 0.8, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "easeIn", delay: 0.5 }}
+                />
+                <motion.div 
+                  className="absolute -bottom-4 left-3 w-2 h-2 bg-amber-400 rounded-full blur-[1px]"
+                  animate={{ y: [0, 150], opacity: [1, 1, 0], scale: [1, 0.8, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "easeIn", delay: 0.8 }}
+                />
+              </motion.div>
 
-            {/* Floating 3D Orbs / Molecules */}
-            {/* Orb 1: Blue Solvent */}
-            <motion.div
-              className="absolute top-[10%] left-[10%] w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 shadow-2xl z-30"
-              style={{ boxShadow: "inset -10px -10px 20px rgba(0,0,0,0.2), 0 20px 40px rgba(59, 130, 246, 0.4)" }}
-              animate={{ 
-                y: [0, -30, 0], 
-                x: [0, 20, 0],
-                rotate: [0, 90, 0] 
-              }}
-              transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            />
-            
-            {/* Orb 2: Teal Reagent */}
-            <motion.div
-              className="absolute bottom-[20%] right-[15%] w-32 h-32 rounded-full bg-gradient-to-br from-emerald-300 to-teal-500 shadow-2xl z-10"
-              style={{ boxShadow: "inset -15px -15px 30px rgba(0,0,0,0.2), 0 25px 50px rgba(20, 184, 166, 0.4)" }}
-              animate={{ 
-                y: [0, 40, 0], 
-                x: [0, -20, 0] 
-              }}
-              transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 1 }}
-            />
+              {/* The Main Erlenmeyer Flask */}
+              <svg width="100%" height="100%" viewBox="0 0 200 300" className="absolute inset-0 drop-shadow-2xl z-10" style={{ filter: 'drop-shadow(0px 20px 30px rgba(14, 165, 233, 0.2))' }}>
+                <defs>
+                  {/* Clip path to keep liquid inside the flask */}
+                  <clipPath id="flask-clip">
+                    <path d="M80 30 L80 100 L20 270 C10 290 20 295 40 295 L160 295 C180 295 190 290 180 270 L120 100 L120 30 Z" />
+                  </clipPath>
+                  
+                  {/* Gradients */}
+                  <linearGradient id="flask-glass" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+                    <stop offset="20%" stopColor="rgba(255,255,255,0.2)" />
+                    <stop offset="80%" stopColor="rgba(255,255,255,0.1)" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0.6)" />
+                  </linearGradient>
 
-            {/* Orb 3: Small Amber Catalyst */}
-            <motion.div
-              className="absolute top-[40%] right-[5%] w-16 h-16 rounded-full bg-gradient-to-br from-amber-300 to-orange-500 shadow-2xl z-30"
-              style={{ boxShadow: "inset -8px -8px 16px rgba(0,0,0,0.2), 0 15px 30px rgba(245, 158, 11, 0.4)" }}
-              animate={{ 
-                y: [0, -50, 0], 
-                scale: [1, 1.1, 1] 
-              }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 2 }}
-            />
-            
-            {/* Abstract Wireframe Ring */}
-            <motion.div
-              className="absolute inset-0 m-auto w-[400px] h-[400px] rounded-full border border-blue-200/50 border-dashed z-0"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-            />
+                  <linearGradient id="liquid-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" stopColor="#0284C7" /> {/* Deep Blue */}
+                    <stop offset="50%" stopColor="#0EA5E9" /> {/* Light Blue */}
+                    <stop offset="100%" stopColor="#10B981" /> {/* Emerald top mixing */}
+                  </linearGradient>
+
+                  <linearGradient id="mixing-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" stopColor="rgba(245, 158, 11, 0)" /> 
+                    <stop offset="100%" stopColor="rgba(245, 158, 11, 0.8)" /> {/* Amber mixing layer */}
+                  </linearGradient>
+                </defs>
+
+                {/* Back of the glass rim */}
+                <ellipse cx="100" cy="25" rx="20" ry="5" fill="none" stroke="#E2E8F0" strokeWidth="3" />
+
+                {/* Liquids Layer (Clipped to Flask Shape) */}
+                <g clipPath="url(#flask-clip)">
+                  {/* Background Liquid (Blue) */}
+                  <rect x="0" y="120" width="200" height="200" fill="url(#liquid-gradient)" />
+                  
+                  {/* Mixing layer (Amber/Green at the top) */}
+                  <motion.rect 
+                    x="0" y="120" width="200" height="80" 
+                    fill="url(#mixing-gradient)"
+                    animate={{ opacity: [0.3, 0.8, 0.3], y: [0, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                    style={{ mixBlendMode: "screen" }}
+                  />
+
+                  {/* Liquid surface wave 1 */}
+                  <motion.path 
+                    d="M0 130 Q 50 110, 100 130 T 200 130 L 200 150 L 0 150 Z" 
+                    fill="#38BDF8" opacity="0.6"
+                    animate={{ x: [-200, 0] }}
+                    transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                  />
+                  {/* Liquid surface wave 2 */}
+                  <motion.path 
+                    d="M0 135 Q 50 150, 100 135 T 200 135 L 200 160 L 0 160 Z" 
+                    fill="#34D399" opacity="0.7" style={{ mixBlendMode: "overlay" }}
+                    animate={{ x: [0, -200] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                  />
+
+                  {/* Dynamic Bubbles */}
+                  {bubbles.map((bubble) => (
+                    <motion.circle
+                      key={bubble.id}
+                      cx={bubble.x}
+                      cy="290"
+                      r={bubble.size}
+                      fill="white"
+                      opacity="0.6"
+                      animate={{ 
+                        y: [0, -170], 
+                        x: [0, Math.random() * 20 - 10, 0, Math.random() * 20 - 10],
+                        opacity: [0, 0.8, 0]
+                      }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: bubble.duration, 
+                        delay: bubble.delay,
+                        ease: "easeIn"
+                      }}
+                    />
+                  ))}
+                  
+                  {/* Large reaction bubbles popping */}
+                  <motion.circle cx="80" cy="140" r="15" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2"
+                    animate={{ scale: [0, 1.5], opacity: [0, 1, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
+                  />
+                  <motion.circle cx="120" cy="130" r="10" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2"
+                    animate={{ scale: [0, 1.5], opacity: [0, 1, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.8, delay: 1.2 }}
+                  />
+                </g>
+
+                {/* Flask Outline (Glass body) */}
+                <path 
+                  d="M80 30 L80 100 L20 270 C10 290 20 295 40 295 L160 295 C180 295 190 290 180 270 L120 100 L120 30" 
+                  fill="url(#flask-glass)" stroke="#CBD5E1" strokeWidth="4" strokeLinejoin="round" 
+                />
+                
+                {/* Front of the glass rim */}
+                <path d="M80 25 C80 30 120 30 120 25" fill="none" stroke="#CBD5E1" strokeWidth="4" />
+                <path d="M75 25 C75 33 125 33 125 25" fill="none" stroke="white" strokeWidth="2" opacity="0.8" />
+
+                {/* Glass Glare / Highlights */}
+                <path d="M40 250 L85 110" stroke="white" strokeWidth="6" strokeLinecap="round" opacity="0.6" style={{ filter: 'blur(1px)' }} />
+                <path d="M150 260 L160 275" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.4" />
+                <path d="M110 40 L110 80" stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
+                
+                {/* Volume markings */}
+                <line x1="120" y1="120" x2="135" y2="120" stroke="#94A3B8" strokeWidth="2" />
+                <text x="140" y="125" fill="#94A3B8" fontSize="10" fontFamily="monospace">800</text>
+                
+                <line x1="120" y1="160" x2="130" y2="160" stroke="#94A3B8" strokeWidth="2" />
+                
+                <line x1="120" y1="200" x2="135" y2="200" stroke="#94A3B8" strokeWidth="2" />
+                <text x="140" y="205" fill="#94A3B8" fontSize="10" fontFamily="monospace">400</text>
+              </svg>
+            </div>
           </motion.div>
 
         </div>
