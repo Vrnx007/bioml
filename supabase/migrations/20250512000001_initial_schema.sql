@@ -305,7 +305,7 @@ CREATE TABLE IF NOT EXISTS public.cart_items (
 -- Helper functions (SECURITY DEFINER for RLS ergonomics)
 CREATE OR REPLACE FUNCTION public.jwt_role()
 RETURNS TEXT LANGUAGE sql STABLE AS $$
-  COALESCE((auth.jwt() ->> 'app_role'), '')
+  SELECT COALESCE((auth.jwt() ->> 'app_role'), '')
 $$;
 
 CREATE OR REPLACE FUNCTION public.is_platform_admin()

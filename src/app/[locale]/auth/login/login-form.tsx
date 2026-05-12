@@ -7,6 +7,23 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { DEMO_AUTH } from "@/lib/demo-auth";
 
+/** next-intl router.push() adds the locale; `next` from middleware is already prefixed. */
+function resolvePostLoginHref(next: string | null, locale: string): string {
+  const fallback = "/catalog";
+  if (!next || next.includes("..") || next.includes("://") || next.startsWith("//")) {
+    return fallback;
+  }
+  const localePrefix = `/${locale}`;
+  if (next === localePrefix || next.startsWith(`${localePrefix}/`)) {
+    const without = next === localePrefix ? "/" : next.slice(localePrefix.length);
+    return without.startsWith("/") ? without : `/${without}`;
+  }
+  if (next.startsWith("/") && !next.startsWith("//")) {
+    return next;
+  }
+  return fallback;
+}
+
 export function LoginForm() {
   const t = useTranslations("Auth");
   const c = useTranslations("Common");
@@ -41,9 +58,10 @@ export function LoginForm() {
       return;
     }
     const next = searchParams.get("next");
-    const safe =
-      next && next.startsWith(`/${locale}/`) && !next.includes("://") && !next.includes("..") ? next : `/${locale}/catalog`;
-    router.push(safe);
+    // next-intl's router.push expects paths WITHOUT the locale prefix (it adds /en or /hi).
+    // Middleware sets ?next=/en/admin — pushing that as-is becomes /en/en/admin → 404.
+    const postLogin = resolvePostLoginHref(next, locale);
+    router.push(postLogin);
     router.refresh();
     setLoading(false);
   }
