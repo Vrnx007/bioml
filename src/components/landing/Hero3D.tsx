@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Beaker, ShieldCheck, Truck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
-export function Hero3D({ t }: { t: any }) {
+export function Hero3D() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -18,7 +18,11 @@ export function Hero3D({ t }: { t: any }) {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" as const },
+    },
   };
 
   return (
