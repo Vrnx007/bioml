@@ -1,6 +1,6 @@
 # Demo access (Supabase Auth + profiles)
 
-Use these **demo credentials** in Supabase Auth (create each user with the same password), then add matching `profiles` rows.
+Emails and password are also shown on **`/{locale}/auth/login`** and defined in code at **`src/lib/demo-auth.ts`**. Create the same users in Supabase Auth, then add matching `profiles` rows.
 
 ## Demo credentials (development)
 

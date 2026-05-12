@@ -28,13 +28,25 @@
   },
   "Auth": {
     "title": "Sign in",
-    "subtitle": "Use the demo email and password from your team handoff.",
+    "subtitle": "Use a demo account below, or your own Supabase user.",
     "email": "Email",
     "password": "Password",
     "signIn": "Sign in",
     "signingIn": "Signing in…",
     "notConfigured": "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
-    "backToCatalog": "Back to catalog"
+    "backToCatalog": "Back to catalog",
+    "demoAccountsTitle": "Demo credentials",
+    "demoPasswordLine": "Password (all three)",
+    "demoRoleAdmin": "Admin",
+    "demoRoleVendor": "Vendor",
+    "demoRoleBuyer": "Buyer",
+    "demoFill": "Fill form",
+    "demoInvalidHint": "Invalid credentials? In Supabase → Authentication → Users, add each email with the password above, then add matching rows in public.profiles (see docs/DEMO_ACCESS.md).",
+    "quickLinksTitle": "Quick links",
+    "adminPanelLink": "Admin panel",
+    "vendorPortalLink": "Vendor portal",
+    "tableRole": "Role",
+    "tableEmail": "Email"
   },
   "Home": {
     "heroTitle": "Pharmaceutical & lab chemicals — procurement you can trust",

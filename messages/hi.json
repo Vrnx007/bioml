@@ -28,13 +28,25 @@
   },
   "Auth": {
     "title": "साइन इन",
-    "subtitle": "अपनी टीम से मिले डेमो ईमेल और पासवर्ड का उपयोग करें।",
+    "subtitle": "नीचे दिए डेमो खाते या अपना Supabase उपयोगकर्ता उपयोग करें।",
     "email": "ईमेल",
     "password": "पासवर्ड",
     "signIn": "साइन इन",
     "signingIn": "साइन इन हो रहा है…",
     "notConfigured": "Supabase कॉन्फ़िगर नहीं है। NEXT_PUBLIC_SUPABASE_URL और NEXT_PUBLIC_SUPABASE_ANON_KEY सेट करें।",
-    "backToCatalog": "कैटलॉग पर वापस"
+    "backToCatalog": "कैटलॉग पर वापस",
+    "demoAccountsTitle": "डेमो क्रेडेंशियल",
+    "demoPasswordLine": "पासवर्ड (तीनों के लिए)",
+    "demoRoleAdmin": "व्यवस्थापक",
+    "demoRoleVendor": "विक्रेता",
+    "demoRoleBuyer": "खरीदार",
+    "demoFill": "फ़ॉर्म भरें",
+    "demoInvalidHint": "अमान्य क्रेडेंशियल? Supabase → Authentication → Users में प्रत्येक ईमेल ऊपर वाले पासवर्ड से जोड़ें, फिर public.profiles में पंक्तियाँ जोड़ें (docs/DEMO_ACCESS.md)।",
+    "quickLinksTitle": "त्वरित लिंक",
+    "adminPanelLink": "व्यवस्थापक पैनल",
+    "vendorPortalLink": "विक्रेता पोर्टल",
+    "tableRole": "भूमिका",
+    "tableEmail": "ईमेल"
   },
   "Home": {
     "heroTitle": "फार्मास्यूटिकल और प्रयोगशाला रसायन — भरोसेमंद खरीद",
