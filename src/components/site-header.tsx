@@ -1,7 +1,8 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Search, User, Package, Shield } from "lucide-react";
+import { Link as LocalizedLink } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 
 export function SiteHeader() {
@@ -10,46 +11,82 @@ export function SiteHeader() {
   const locale = useLocale();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-sky-800">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-sky-800">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface-elevated/95 shadow-header backdrop-blur-md">
+      <div className="ui-container flex flex-wrap items-center gap-4 py-3 lg:flex-nowrap lg:gap-6">
+        <LocalizedLink href="/" className="group flex shrink-0 items-center gap-3">
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-card border border-border bg-brand-navy text-sm font-bold tracking-wide text-white shadow-sm transition group-hover:border-accent-teal"
+            aria-hidden
+          >
             BM
           </span>
-          <span>{c("brand")}</span>
-        </Link>
-        <form action={`/${locale}/catalog`} className="order-last flex w-full flex-1 basis-full sm:order-none sm:basis-[320px] md:max-w-xl">
-          <input
-            name="q"
-            placeholder={c("searchPlaceholder")}
-            className="w-full rounded-l-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-sky-500 focus:ring-2"
-          />
-          <button
-            type="submit"
-            className="rounded-r-md bg-sky-700 px-4 py-2 text-sm font-medium text-white hover:bg-sky-800"
-          >
-            Search
-          </button>
+          <span className="font-display text-xl font-semibold tracking-tight text-brand-navy group-hover:text-accent-teal">
+            {c("brand")}
+          </span>
+        </LocalizedLink>
+
+        <form
+          action={`/${locale}/catalog`}
+          className="order-3 flex w-full flex-1 basis-full lg:order-none lg:max-w-2xl lg:basis-auto"
+          role="search"
+        >
+          <label className="sr-only" htmlFor="global-search">
+            {c("searchPlaceholder")}
+          </label>
+          <div className="flex w-full overflow-hidden rounded-ui border border-border-strong bg-surface-muted shadow-sm transition focus-within:border-accent-teal focus-within:ring-2 focus-within:ring-accent-teal/20">
+            <input
+              id="global-search"
+              name="q"
+              placeholder={c("searchPlaceholder")}
+              className="min-h-11 flex-1 border-0 bg-transparent px-4 text-base text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-0"
+            />
+            <button
+              type="submit"
+              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center bg-brand-navy px-4 text-white transition hover:bg-brand-navy-mid"
+              aria-label="Search catalog"
+            >
+              <Search className="h-5 w-5" strokeWidth={2} />
+            </button>
+          </div>
         </form>
-        <nav className="flex flex-wrap items-center gap-3 text-sm">
-          <Link href="/catalog" className="text-slate-700 hover:text-sky-800">
-            {t("catalog")}
-          </Link>
-          <Link href="/account" className="text-slate-700 hover:text-sky-800">
+
+        <nav
+          className="ml-auto flex flex-wrap items-center justify-end gap-1 sm:gap-2"
+          aria-label="Primary"
+        >
+          <NavItem href="/catalog">{t("catalog")}</NavItem>
+          <NavItem href="/account">
+            <User className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
             {t("account")}
-          </Link>
-          <Link href="/vendor/onboarding" className="text-slate-700 hover:text-sky-800">
+          </NavItem>
+          <NavItem href="/vendor/onboarding">
+            <Package className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
             {t("vendor")}
-          </Link>
-          <Link href="/admin" className="text-slate-700 hover:text-sky-800">
+          </NavItem>
+          <NavItem href="/admin">
+            <Shield className="mr-1.5 hidden h-4 w-4 sm:inline" strokeWidth={2} aria-hidden />
             {t("admin")}
-          </Link>
-          <LocaleSwitcher />
+          </NavItem>
+          <div className="ml-1 flex items-center border-l border-border pl-3">
+            <LocaleSwitcher />
+          </div>
         </nav>
       </div>
-      <div className="border-t border-slate-100 bg-slate-50 px-4 py-1.5 text-center text-xs text-slate-600 sm:text-left">
-        {c("trustStrip")}
+
+      <div className="ui-trust-strip">
+        <div className="ui-container py-2.5 text-center sm:text-left">{c("trustStrip")}</div>
       </div>
     </header>
+  );
+}
+
+function NavItem({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <LocalizedLink
+      href={href}
+      className="inline-flex min-h-10 items-center rounded-md px-3 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted hover:text-brand-navy"
+    >
+      {children}
+    </LocalizedLink>
   );
 }

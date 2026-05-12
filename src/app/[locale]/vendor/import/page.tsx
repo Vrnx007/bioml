@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { FileSpreadsheet } from "lucide-react";
 
 export default function VendorImportPage() {
   const t = useTranslations("Vendor");
@@ -24,28 +25,45 @@ export default function VendorImportPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-bold text-slate-900">{t("csvTitle")}</h1>
-      <p className="mt-2 text-sm text-slate-600">{t("csvHint")}</p>
-      <textarea
-        className="mt-4 h-48 w-full rounded border border-slate-200 bg-white p-3 font-mono text-xs"
-        value={csv}
-        onChange={(e) => setCsv(e.target.value)}
-        placeholder='Product_Name,CAS_Number,...\n"Caustic Soda",1310-73-2,...'
-      />
-      <button
-        type="button"
-        disabled={loading || !csv.trim()}
-        onClick={parse}
-        className="mt-3 rounded bg-sky-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-      >
-        {loading ? "…" : t("parseCsv")}
-      </button>
-      {result && (
-        <pre className="mt-6 overflow-auto rounded border border-slate-200 bg-slate-900 p-4 text-xs text-green-100">
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+    <div className="border-b border-border bg-surface-page py-12 sm:py-16">
+      <div className="ui-container max-w-4xl">
+        <div className="flex items-start gap-3">
+          <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-ui border border-border bg-surface-elevated text-accent-teal">
+            <FileSpreadsheet className="h-5 w-5" strokeWidth={2} aria-hidden />
+          </span>
+          <div>
+            <h1 className="font-display text-display-sm text-brand-navy">{t("csvTitle")}</h1>
+            <p className="ui-prose mt-3 max-w-3xl text-base">{t("csvHint")}</p>
+          </div>
+        </div>
+
+        <label htmlFor="csv-input" className="ui-label mt-8">
+          Paste CSV
+        </label>
+        <textarea
+          id="csv-input"
+          className="ui-input min-h-[12rem] font-mono text-sm leading-relaxed"
+          value={csv}
+          onChange={(e) => setCsv(e.target.value)}
+          placeholder={`Product_Name,CAS_Number,...\n"Caustic Soda",1310-73-2,...`}
+        />
+        <button
+          type="button"
+          disabled={loading || !csv.trim()}
+          onClick={parse}
+          className="ui-btn-primary mt-4 disabled:opacity-50"
+        >
+          {loading ? "Parsing…" : t("parseCsv")}
+        </button>
+        {result && (
+          <pre
+            className="mt-8 max-h-[28rem] overflow-auto rounded-card border border-border bg-brand-navy p-5 font-mono text-sm leading-relaxed text-emerald-100 shadow-inner"
+            tabIndex={0}
+          >
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        )}
+      </div>
     </div>
   );
 }

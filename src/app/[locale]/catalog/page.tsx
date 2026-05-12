@@ -4,6 +4,7 @@ import { FilterSidebar } from "@/components/filter-sidebar";
 import { ProductCard } from "@/components/product-card";
 import { fetchCatalog } from "@/lib/catalog";
 import { canViewPricing } from "@/lib/auth-helpers";
+import { LayoutGrid } from "lucide-react";
 
 export default async function CatalogPage({
   searchParams,
@@ -41,26 +42,42 @@ export default async function CatalogPage({
   const tc = await getTranslations("Catalog");
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <h1 className="text-2xl font-bold text-slate-900">{tc("title")}</h1>
-      <p className="mt-1 text-sm text-slate-600">{tc("subtitle")}</p>
-      <div className="mt-8 flex flex-col gap-8 lg:flex-row">
-        <Suspense fallback={<div className="h-64 w-64 animate-pulse rounded bg-slate-200" />}>
-          <FilterSidebar />
-        </Suspense>
-        <div className="flex-1">
-          <p className="mb-4 text-sm text-slate-500">
-            {tc("results")}: {products.length}
-          </p>
-          {products.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-slate-200 bg-white p-8 text-center text-slate-600">{tc("noResults")}</p>
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {products.map((p) => (
-                <ProductCard key={p.id} p={p} showPrice={showPrice} />
-              ))}
+    <div className="border-b border-border bg-surface-elevated py-10 sm:py-12">
+      <div className="ui-container">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-accent-teal">
+              <LayoutGrid className="h-5 w-5" strokeWidth={2} aria-hidden />
+              <span className="text-xs font-semibold uppercase tracking-widest">Catalog</span>
             </div>
-          )}
+            <h1 className="mt-2 font-display text-display-sm text-brand-navy">{tc("title")}</h1>
+            <p className="ui-prose mt-3 max-w-2xl text-lg">{tc("subtitle")}</p>
+          </div>
+          <p className="rounded-full border border-border bg-surface-muted px-4 py-2 font-mono text-sm tabular-nums text-text-secondary">
+            {tc("results")}: <span className="font-semibold text-text-primary">{products.length}</span>
+          </p>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:gap-12">
+          <Suspense
+            fallback={<div className="h-72 w-full max-w-xs animate-pulse rounded-card bg-surface-muted lg:w-72" aria-hidden />}
+          >
+            <FilterSidebar />
+          </Suspense>
+          <div className="min-w-0 flex-1">
+            {products.length === 0 ? (
+              <div className="ui-card flex flex-col items-center justify-center gap-3 px-8 py-16 text-center">
+                <p className="font-display text-xl text-brand-navy">{tc("noResults")}</p>
+                <p className="max-w-md text-text-secondary">Try clearing filters or search with a CAS number or product name.</p>
+              </div>
+            ) : (
+              <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+                {products.map((p) => (
+                  <ProductCard key={p.id} p={p} showPrice={showPrice} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

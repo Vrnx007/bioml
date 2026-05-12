@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { ChevronDown } from "lucide-react";
 
 const filterKeys = [
   ["promotion", "promotion"],
@@ -40,23 +41,27 @@ export function FilterSidebar() {
   );
 
   return (
-    <aside className="w-full shrink-0 rounded-lg border border-slate-200 bg-white lg:w-64">
-      <div className="border-b border-slate-100 px-3 py-2 text-sm font-semibold text-slate-900">{tc("filters")}</div>
-      <ul className="max-h-[70vh] divide-y divide-slate-100 overflow-y-auto text-sm">
+    <aside className="ui-card w-full shrink-0 overflow-hidden lg:w-72">
+      <div className="border-b border-border bg-surface-muted/50 px-4 py-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-navy">{tc("filters")}</h2>
+      </div>
+      <ul className="max-h-[min(70vh,640px)] divide-y divide-border-default overflow-y-auto">
         {filterKeys.map(([param, msgKey]) => (
-          <li key={param} className="px-3 py-2">
-            <details className="group">
-              <summary className="cursor-pointer list-none font-medium text-slate-800 [&::-webkit-details-marker]:hidden">
-                <span className="flex items-center justify-between">
-                  {t(msgKey)}
-                  <span className="text-slate-400 group-open:rotate-45">+</span>
-                </span>
+          <li key={param} className="px-1">
+            <details className="group px-3 py-1">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-3 text-sm font-medium text-text-primary [&::-webkit-details-marker]:hidden">
+                <span>{t(msgKey)}</span>
+                <ChevronDown
+                  className="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden
+                />
               </summary>
-              <div className="mt-2 pb-1">
+              <div className="border-t border-border pb-3 pt-1">
                 {param === "promotion" ? (
-                  <label className="flex items-center gap-2 text-slate-600">
+                  <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-1 py-2 text-sm text-text-secondary">
                     <input
                       type="checkbox"
+                      className="h-4 w-4 rounded border-border-strong text-accent-teal focus:ring-accent-teal"
                       checked={searchParams.get("promotion") === "1"}
                       onChange={(e) => setParam("promotion", e.target.checked ? "1" : "")}
                     />
@@ -64,8 +69,8 @@ export function FilterSidebar() {
                   </label>
                 ) : (
                   <input
-                    className="mt-1 w-full rounded border border-slate-200 px-2 py-1 text-xs"
-                    placeholder="Filter…"
+                    className="ui-input mt-1 text-sm"
+                    placeholder="Type and press Enter"
                     defaultValue={searchParams.get(param) ?? ""}
                     onBlur={(e) => setParam(param, e.target.value.trim())}
                     onKeyDown={(e) => {
@@ -78,10 +83,10 @@ export function FilterSidebar() {
           </li>
         ))}
       </ul>
-      <div className="border-t border-slate-100 p-2">
+      <div className="border-t border-border bg-surface-muted/30 p-3">
         <button
           type="button"
-          className="w-full rounded border border-slate-200 py-1.5 text-xs text-slate-700 hover:bg-slate-50"
+          className="ui-btn-secondary w-full border-dashed py-2.5 text-sm font-medium"
           onClick={() => router.push(pathname)}
         >
           {tc("clearFilters")}

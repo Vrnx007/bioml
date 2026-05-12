@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { Languages, ChevronDown } from "lucide-react";
 
 export function LocaleSwitcher() {
   const locale = useLocale();
@@ -10,10 +11,14 @@ export function LocaleSwitcher() {
   const pathname = usePathname();
 
   return (
-    <label className="flex items-center gap-1 text-xs text-slate-600">
-      <span className="sr-only">Language</span>
+    <div className="relative flex items-center gap-2">
+      <Languages className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden />
+      <label className="sr-only" htmlFor="locale-select">
+        Language
+      </label>
       <select
-        className="rounded border border-slate-200 bg-white px-2 py-1 text-slate-800"
+        id="locale-select"
+        className="ui-input min-h-10 cursor-pointer appearance-none py-2 pl-10 pr-10 text-sm font-medium"
         value={locale}
         onChange={(e) => router.replace(pathname, { locale: e.target.value as (typeof routing.locales)[number] })}
       >
@@ -23,6 +28,7 @@ export function LocaleSwitcher() {
           </option>
         ))}
       </select>
-    </label>
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden />
+    </div>
   );
 }

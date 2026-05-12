@@ -2,20 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+  Design system — B2B scientific / pharma procurement (UI/UX Pro Max aligned).
+  Semantic tokens, WCAG-friendly contrast, 8px spacing rhythm.
+*/
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --surface-page: #f1f5f9;
+    --surface-elevated: #ffffff;
+    --surface-muted: #f8fafc;
+    --border-default: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --brand-navy: #0c2d48;
+    --brand-navy-mid: #134e6f;
+    --accent-teal: #0d9488;
+    --accent-teal-hover: #0f7669;
+    --accent-teal-subtle: #ccfbf1;
+    --link: #0369a1;
+    --link-hover: #075985;
+    --success: #047857;
+    --success-surface: #ecfdf5;
+    --warning-surface: #fffbeb;
+    --warning-border: #fde68a;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-header: 0 1px 0 rgba(15, 23, 42, 0.06), 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  html {
+    @apply scroll-smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-dvh bg-surface-page text-text-primary antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+    touch-action: manipulation;
+  }
+
+  ::selection {
+    background-color: var(--accent-teal-subtle);
+    color: var(--brand-navy);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 2px;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .ui-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .ui-card {
+    @apply rounded-[var(--radius-lg)] border border-border bg-surface-elevated shadow-card;
+  }
+
+  .ui-card-inner {
+    @apply rounded-[var(--radius-md)] border border-border bg-slate-50/90;
+  }
+
+  .ui-heading-display {
+    @apply font-display text-text-primary tracking-tight;
+  }
+
+  .ui-prose {
+    @apply text-base leading-relaxed text-text-secondary sm:leading-[1.65];
+  }
+
+  .ui-btn-primary {
+    @apply inline-flex min-h-11 min-w-[44px] items-center justify-center rounded-[var(--radius-md)] bg-accent-teal px-5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-accent-teal-hover active:scale-[0.99];
+  }
+
+  .ui-btn-secondary {
+    @apply inline-flex min-h-11 min-w-[44px] items-center justify-center rounded-[var(--radius-md)] border border-border-strong bg-surface-elevated px-5 text-sm font-semibold text-text-primary transition-colors duration-200 hover:border-brand-navy-mid hover:bg-surface-muted;
+  }
+
+  .ui-input {
+    @apply min-h-11 w-full rounded-[var(--radius-md)] border border-border bg-surface-elevated px-3.5 text-base text-text-primary shadow-sm transition-shadow placeholder:text-text-muted focus:border-accent-teal focus:outline-none focus:ring-2 focus:ring-[rgba(13,148,136,0.22)];
+  }
+
+  .ui-label {
+    @apply mb-1.5 block text-sm font-medium text-text-secondary;
+  }
+
+  .ui-trust-strip {
+    @apply border-t border-border bg-brand-navy text-[13px] leading-snug text-slate-300;
+  }
 }
